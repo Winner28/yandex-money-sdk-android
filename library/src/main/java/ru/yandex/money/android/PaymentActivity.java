@@ -409,7 +409,7 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
 
             @Override
             protected void onPostExecute(OperationResult<T> result) {
-                if (isCancelled() || PaymentActivity.this == null) return;
+                if (isCancelled()) return;
                 if (result.operation != null) {
                     consumer.consume(result.operation);
                     hideProgressBar();
