@@ -6,7 +6,7 @@ ext {
     // version* variables must not be longer than two digits
     versionMajor = 4
     versionMinor = 1
-    versionPatch = 0
+    versionPatch = 1
     versionAlpha = 0
 }
 
@@ -48,7 +48,7 @@ int getAppVersionCode() {
 }
 
 dependencies {
-    compile 'com.yandex.money.api:yandex-money-sdk-java:7.1.0'
+    compile 'com.yandex.money.api:yandex-money-sdk-java:7.2.15'
     compile 'com.android.support:support-annotations:25.3.1'
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'

@@ -63,7 +63,7 @@ public class MyActivity extends Activity implement View.OnClickListener {
 
     @Override
     public void onClickListener(View v) {
-        PaymentParams phoneParams = PhoneParams.newInstance("79012345678", new BigDecimal(100.0))
+        PaymentParams phoneParams = PhoneParams.newInstance("79012345678", new BigDecimal(100.0));
         Intent intent = PaymentActivity.getBuilder(this)
                 .setPaymentParams(phoneParams)
                 .setClientId(CLIENT_ID)
