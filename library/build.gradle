@@ -5,8 +5,8 @@ apply plugin: 'bintray-release'
 ext {
     // version* variables must not be longer than two digits
     versionMajor = 4
-    versionMinor = 2
-    versionPatch = 0
+    versionMinor = 1
+    versionPatch = 1
     versionAlpha = 0
 }
 
