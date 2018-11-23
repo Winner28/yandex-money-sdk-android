@@ -179,14 +179,12 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
     @Override
     protected void onResume() {
         super.onResume();
-
         isPaused = false;
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
         isPaused = true;
     }
 
@@ -411,7 +409,7 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
 
             @Override
             protected void onPostExecute(OperationResult<T> result) {
-                if (isCancelled() || PaymentActivity.this == null || PaymentActivity.this.isPaused) return;
+                if (isCancelled() || PaymentActivity.this == null) return;
                 if (result.operation != null) {
                     consumer.consume(result.operation);
                     hideProgressBar();
@@ -508,7 +506,7 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
     }
 
     private void replaceFragment(@Nullable Fragment fragment, boolean clearBackStack) {
-        if (fragment == null) {
+        if (fragment == null || isPaused) {
             return;
         }
 
