@@ -1,12 +1,11 @@
 apply plugin: 'com.android.library'
-apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'bintray-release'
 
 ext {
     // version* variables must not be longer than two digits
     versionMajor = 4
     versionMinor = 1
-    versionPatch = 1
+    versionPatch = 2
     versionAlpha = 0
 }
 
