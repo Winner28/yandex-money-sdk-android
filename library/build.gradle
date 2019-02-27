@@ -61,5 +61,7 @@ publish {
     version = getAppVersionName()
     website = 'https://github.com/yandex-money/yandex-money-sdk-android'
     issueTracker = "${website}/issues"
+    desc = "Yandex.Money SDK for Android"
+    publishVersion = getAppVersionCode()
     repository = "${website}.git"
 }
