@@ -114,7 +114,7 @@ public final class WebFragment extends PaymentFragment {
         Views.setText(errorView, R.id.ym_error_title, getString(titleResId));
         Views.setText(errorView, R.id.ym_error_message, getString(messageResId));
         action.setText(getString(actionResId));
-        action.setOnClickListener(v -> webView.reload());
+        action.setOnClickListener(v -> loadPage());
     }
 
     private void loadPage(@NonNull String url, @NonNull Map<String, String> postParams) {
