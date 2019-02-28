@@ -5,7 +5,7 @@ ext {
     // version* variables must not be longer than two digits
     versionMajor = 4
     versionMinor = 1
-    versionPatch = 2
+    versionPatch = 3
     versionAlpha = 0
 }
 
@@ -58,10 +58,9 @@ publish {
     userOrg = 'yandex-money'
     groupId = 'com.yandex.money.api'
     artifactId = 'yandex-money-sdk-android'
-    version = getAppVersionName()
+    publishVersion = getAppVersionName()
     website = 'https://github.com/yandex-money/yandex-money-sdk-android'
     issueTracker = "${website}/issues"
     desc = "Yandex.Money SDK for Android"
-    publishVersion = getAppVersionCode()
     repository = "${website}.git"
 }
