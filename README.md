@@ -30,7 +30,7 @@ allprojects {
 }
 
 dependencies {
-    compile 'com.yandex.money.api:yandex-money-sdk-android:4.1.2'
+    compile 'com.yandex.money.api:yandex-money-sdk-android:4.1.3'
 }
 ```
 
