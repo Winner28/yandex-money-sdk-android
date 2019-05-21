@@ -532,7 +532,7 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
         if (!clearBackStack && currentFragment != null) {
             transaction.addToBackStack(fragment.getTag());
         }
-        transaction.commitAllowingStateLoss();
+        transaction.commit();
         hideKeyboard();
     }
 
