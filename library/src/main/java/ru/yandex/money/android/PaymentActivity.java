@@ -118,6 +118,8 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
     @Nullable
     private AsyncTask<Void, Void, ?> task;
 
+    private boolean isStateSaved = false;
+
     /**
      * Returns intent builder used for launch this activity.
      *
@@ -169,6 +171,7 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        isStateSaved = true;
         outState.putParcelable(KEY_PROCESS_SAVED_STATE,
                 new ExternalPaymentProcessSavedStateParcelable(process.getSavedState()));
         if (selectedCard != null) {
@@ -177,9 +180,16 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
     }
 
     @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        isStateSaved = false;
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         isPaused = false;
+        isStateSaved = false;
     }
 
     @Override
@@ -506,7 +516,7 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
     }
 
     private void replaceFragment(@Nullable Fragment fragment, boolean clearBackStack) {
-        if (fragment == null || isPaused) {
+        if (fragment == null || isPaused || isStateSaved) {
             return;
         }
 
@@ -522,7 +532,7 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
         if (!clearBackStack && currentFragment != null) {
             transaction.addToBackStack(fragment.getTag());
         }
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
         hideKeyboard();
     }
 
