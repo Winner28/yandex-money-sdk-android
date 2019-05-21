@@ -111,7 +111,6 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
     private List<ExternalCard> cards;
 
     private boolean immediateProceed = true;
-    private boolean isPaused = false;
 
     @Nullable
     private ExternalCard selectedCard;
@@ -188,14 +187,7 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
     @Override
     protected void onResume() {
         super.onResume();
-        isPaused = false;
         isStateSaved = false;
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        isPaused = true;
     }
 
     @Override
@@ -516,7 +508,7 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
     }
 
     private void replaceFragment(@Nullable Fragment fragment, boolean clearBackStack) {
-        if (fragment == null || isPaused || isStateSaved) {
+        if (fragment == null || isStateSaved) {
             return;
         }
 
