@@ -103,7 +103,7 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
 
     private static final String KEY_PROCESS_SAVED_STATE = "processSavedState";
     private static final String KEY_SELECTED_CARD = "selectedCard";
-    private static boolean isStarted = false;
+    private static volatile boolean isStarted = false;
 
     private static final String PRODUCTION_HOST = "https://money.yandex.ru";
 
@@ -531,13 +531,14 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
                 mockWebServer.setDispatcher(new MockDispatcher(getApplicationContext()));
                 try {
                     mockWebServer.start(8080);
+                    isStarted = true;
                 } catch (IOException e) {
+                    isStarted = false;
                     e.printStackTrace();
                 }
             }
         }.start();
 
-        isStarted = true;
     }
 
     private void replaceFragment(@Nullable Fragment fragment, boolean clearBackStack) {
