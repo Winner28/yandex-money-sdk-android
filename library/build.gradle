@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 apply plugin: 'bintray-release'
 
 ext {
@@ -26,6 +28,19 @@ android {
         versionName getAppVersionName()
         consumerProguardFiles 'proguard-cfg.txt'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField 'boolean', 'MOCK_ENABLED', 'false'
+    }
+
+    flavorDimensions "common"
+    productFlavors {
+        dev {
+            dimension "common"
+        }
+        mSDKMock {
+            dimension "common"
+            buildConfigField 'boolean', 'MOCK_ENABLED', 'true'
+        }
     }
 
     lintOptions {
@@ -47,11 +62,14 @@ int getAppVersionCode() {
 }
 
 dependencies {
-    compile 'com.yandex.money.api:yandex-money-sdk-java:7.2.15'
+    compile 'com.yandex.money.api:yandex-money-sdk-java:7.2.21'
     compile 'com.android.support:support-annotations:25.3.1'
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    compile "com.squareup.okhttp3:mockwebserver:4.0.1"
+    compile 'com.google.code.gson:gson:2.8.5'
     androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.5.4'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 publish {
@@ -63,4 +81,7 @@ publish {
     issueTracker = "${website}/issues"
     desc = "Yandex.Money SDK for Android"
     repository = "${website}.git"
+}
+repositories {
+    mavenCentral()
 }

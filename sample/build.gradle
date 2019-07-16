@@ -9,6 +9,8 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+
+        buildConfigField 'boolean', 'MOCK_ENABLED', 'false'
     }
 
     buildTypes {
@@ -20,6 +22,17 @@ android {
 
     lintOptions {
         disable 'InvalidPackage','MissingTranslation'
+    }
+
+    flavorDimensions "common"
+    productFlavors {
+        dev {
+            dimension "common"
+        }
+        mSDKMock {
+            dimension "common"
+            buildConfigField 'boolean', 'MOCK_ENABLED', 'true'
+        }
     }
 
     compileOptions {

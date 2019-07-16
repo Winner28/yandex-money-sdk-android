@@ -24,13 +24,23 @@
 
 package ru.yandex.money.android.database;
 
+import ru.yandex.money.android.BuildConfig;
+
 /**
  * Represent a structure of {@code MoneySource} table. This table is used to store
  * {@link com.yandex.money.api.model.ExternalCard} data.
  */
 final class MoneySourceTable {
 
-    static final String NAME = "MoneySources";
+    static final String NAME;
+
+    static {
+        if (BuildConfig.MOCK_ENABLED) {
+            NAME = "MoneySourcesMock";
+        } else {
+            NAME = "MoneySources";
+        }
+    }
 
     static final String FUNDING_SOURCE_TYPE = "funding_source_type";
     static final String TYPE = "type";

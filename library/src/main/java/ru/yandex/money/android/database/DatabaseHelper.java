@@ -29,14 +29,24 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
+import ru.yandex.money.android.BuildConfig;
+
 /**
  * Database helper that extends {@link SQLiteOpenHelper}.
  */
 final class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "ru.yandex.money.android.database";
+    private static final String DATABASE_NAME;
 
     private static final int DATABASE_VERSION = 1;
+
+    static {
+        if (BuildConfig.MOCK_ENABLED) {
+            DATABASE_NAME = "ru.yandex.money.android.mSDKMock";
+        } else {
+            DATABASE_NAME = "ru.yandex.money.android.mSDK";
+        }
+    }
 
     /**
      * Creates an instance of {@link DatabaseHelper}.

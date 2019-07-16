@@ -33,11 +33,21 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.yandex.money.android.sample.BuildConfig;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String NAME = "sample.db";
+    private static final String NAME;
 
     private static final int VERSION = 1;
+
+    static {
+        if (BuildConfig.MOCK_ENABLED) {
+            NAME =  "sample_mock.db";
+        } else {
+            NAME = "sample.db";
+        }
+    }
 
     private static DatabaseHelper instance;
 
