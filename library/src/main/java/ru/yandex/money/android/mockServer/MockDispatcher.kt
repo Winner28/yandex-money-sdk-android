@@ -21,10 +21,6 @@ class MockDispatcher(private val context: Context): Dispatcher() {
 
     override fun dispatch(request: RecordedRequest): MockResponse {
         return when(request.requestUrl?.toUrl()?.path) {
-            "/api/operation-details" -> {
-                // TODO
-                MockResponse().setResponseCode(200).setBody("https://yandex.ru/dev/money/doc/dg/reference/operation-history-docpage/")
-            }
             "/api/request-external-payment" -> successResponse(ResponseType.REQUEST_EXTERNAL_PAYMENT, request)
             "/api/process-external-payment" -> successResponse(ResponseType.PROCESS_EXTERNAL_PAYMENT, request)
             "/api/instance-id" -> successResponse(ResponseType.INSTANCE_ID)
