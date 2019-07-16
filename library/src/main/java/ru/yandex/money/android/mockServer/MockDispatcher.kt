@@ -10,8 +10,6 @@ import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.RecordedRequest
-import ru.yandex.money.android.utils.ResponseLoader
-import ru.yandex.money.android.utils.ResponseType
 import java.nio.charset.Charset
 import java.util.*
 
