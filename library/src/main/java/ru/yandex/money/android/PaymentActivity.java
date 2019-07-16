@@ -57,7 +57,6 @@ import com.yandex.money.api.net.providers.HostsProvider;
 import com.yandex.money.api.processes.ExternalPaymentProcess;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -445,7 +444,7 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
 
     private boolean initPaymentProcess() {
         final Intent intent = getIntent();
-        final String clientId = "370190E9AC2656043498E48F7A8CCEBAD03D15E4CC4CC988A757825A560631EC";
+        final String clientId = intent.getStringExtra(EXTRA_CLIENT_ID);
 
         final String host = intent.getStringExtra(EXTRA_HOST);
         final ApiClient client = new DefaultApiClient.Builder()
@@ -538,11 +537,6 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
             }
         }.start();
 
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         isStarted = true;
     }
 
