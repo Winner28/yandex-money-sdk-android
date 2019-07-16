@@ -48,13 +48,13 @@ class MockDispatcher(private val context: Context): Dispatcher() {
                     val title  = url.queryParameter("phone-number")?.let {
                         "Перевод по номеру телефона: $it"
                     } ?: "Перевод на кошелек"
-                    return gson.parseJson<RequestExternalPayment>(defaultResponse)
+                    return parseJson<RequestExternalPayment>(defaultResponse)
                             .copy(amount = amount, title = title)
                             .toJson()
                 }
             }
             if (type == ResponseType.PROCESS_EXTERNAL_PAYMENT) {
-                 val payment = gson.parseJson<ProcessExternalPayment>(defaultResponse)
+                 val payment = parseJson<ProcessExternalPayment>(defaultResponse)
                  return payment
                          .copy(externalCard = ExternalCard.Builder()
                                  .setPanFragment(
@@ -73,8 +73,8 @@ class MockDispatcher(private val context: Context): Dispatcher() {
         } ?: defaultResponse
     }
 
-    private inline fun <reified T> Gson.parseJson(json: String): T =
-            fromJson<T>(json, T::class.java)
+    private inline fun <reified T> parseJson(json: String): T =
+            gson.fromJson<T>(json, T::class.java)
 
     private fun Any.toJson(): String =
             gson.toJson(this)
