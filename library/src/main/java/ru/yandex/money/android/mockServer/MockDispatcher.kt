@@ -47,7 +47,7 @@ class MockDispatcher(private val context: Context): Dispatcher() {
                 url.queryParameter("amount")?.let { amount ->
                     val title  = url.queryParameter("phone-number")?.let {
                         "Перевод по номеру телефона: $it"
-                    } ?: "Перевод на кошелек"
+                    } ?: "Перевод на кошелек: ${url.queryParameter("to")}"
                     return parseJson<RequestExternalPayment>(defaultResponse)
                             .copy(amount = amount, title = title)
                             .toJson()
@@ -64,7 +64,7 @@ class MockDispatcher(private val context: Context): Dispatcher() {
                                  )
                                  .setFundingSourceType(payment.externalCard.moneySourceToken)
                                  .setMoneySourceToken(UUID.randomUUID().toString())
-                                 .setType(CardBrand.values().toList().shuffled().first())
+                                 .setType(CardBrand.values().toList().shuffled().last())
                                  .create())
                          .toJson()
 
