@@ -99,17 +99,16 @@ public final class CardsFragment extends PaymentFragment {
 
         for (int i = 0; i < getCards().size(); i++) {
             final ExternalCard externalCard = getCards().get(i);
-            final View card = inflater.inflate(R.layout.ym_card_item, bankCards, false);
-            bankCards.addView(card);
-            card.setOnClickListener(v -> showCsc(externalCard));
+            final View cardView = inflater.inflate(R.layout.ym_card_item, bankCards, false);
+            bankCards.addView(cardView);
+            cardView.setOnClickListener(v -> showCsc(externalCard));
 
-            final TextView panFragment = (TextView) card.findViewById(R.id.ym_pan_fragment);
+            final TextView panFragment = (TextView) cardView.findViewById(R.id.ym_pan_fragment);
             panFragment.setText(MoneySourceFormatter.formatPanFragment(externalCard));
             panFragment.setCompoundDrawablesWithIntrinsicBounds(CardType.get(externalCard.type).cardResId, 0, 0, 0);
 
             final ImageButton button = (ImageButton) view.findViewById(R.id.ym_actions);
-            final int iFinal = i;
-            button.setOnClickListener(v -> showPopup(v, iFinal, externalCard));
+            button.setOnClickListener(v -> showPopup(v, cardView, externalCard));
         }
 
         View cardsFooter = inflater.inflate(R.layout.ym_cards_footer, bankCards, false);
@@ -128,20 +127,20 @@ public final class CardsFragment extends PaymentFragment {
         return activity == null ? Collections.emptyList() : activity.getCards();
     }
 
-    private void showPopup(@NonNull View v, int position, @Nullable ExternalCard card) {
+    private void showPopup(@NonNull View v, View cardView, @Nullable ExternalCard card) {
         menu = new PopupMenu(getPaymentActivity(), v);
         MenuInflater inflater = menu.getMenuInflater();
         inflater.inflate(R.menu.ym_card_actions, menu.getMenu());
-        menu.setOnMenuItemClickListener(new MenuItemClickListener(card, position));
+        menu.setOnMenuItemClickListener(new MenuItemClickListener(card, cardView));
         menu.show();
     }
 
-    void deleteCard(@Nullable ExternalCard card, int position) {
+    void deleteCard(@Nullable ExternalCard card, View cardView) {
         DatabaseStorage storage = getDatabaseStorage();
         if (storage == null) return;
 
         storage.deleteExternalCard(card);
-        bankCards.removeViewAt(position);
+        bankCards.removeView(cardView);
         getCards().remove(card);
     }
 
@@ -158,17 +157,17 @@ public final class CardsFragment extends PaymentFragment {
 
         @Nullable
         private final ExternalCard card;
-        private final int position;
+        private final View cardView;
 
-        MenuItemClickListener(@Nullable ExternalCard card, int position) {
+        MenuItemClickListener(@Nullable ExternalCard card, View cardView) {
             this.card = card;
-            this.position = position;
+            this.cardView = cardView;
         }
 
         @Override
         public boolean onMenuItemClick(MenuItem item) {
             if (item.getItemId() == R.id.ym_delete) {
-                deleteCard(card, position);
+                deleteCard(card, cardView);
                 menu = null;
                 return true;
             }
