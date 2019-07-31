@@ -29,11 +29,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import java.io.IOException;
+
+import okhttp3.mockwebserver.MockWebServer;
+import ru.yandex.money.android.mockServer.MockDispatcher;
+
 public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (BuildConfig.MOCK_ENABLED) {
+            startWebServer();
+        }
         setContentView(R.layout.activity_main);
 
         findButton(R.id.send_p2p).setOnClickListener(new View.OnClickListener() {
@@ -53,5 +61,21 @@ public class MainActivity extends Activity {
 
     private Button findButton(int id) {
         return (Button) findViewById(id);
+    }
+
+    private void startWebServer() {
+        new Thread() {
+            @Override
+            public void run() {
+                final MockWebServer mockWebServer = new MockWebServer();
+                mockWebServer.setDispatcher(new MockDispatcher(getApplicationContext()));
+                try {
+                    mockWebServer.start(8080);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+
     }
 }

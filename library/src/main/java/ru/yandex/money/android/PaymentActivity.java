@@ -53,25 +53,20 @@ import com.yandex.money.api.model.MoneySource;
 import com.yandex.money.api.net.clients.ApiClient;
 import com.yandex.money.api.net.clients.DefaultApiClient;
 import com.yandex.money.api.net.providers.DefaultApiV1HostsProvider;
-import com.yandex.money.api.net.providers.HostsProvider;
 import com.yandex.money.api.processes.ExternalPaymentProcess;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import okhttp3.mockwebserver.MockWebServer;
 import ru.yandex.money.android.database.DatabaseStorage;
 import ru.yandex.money.android.fragments.CardsFragment;
 import ru.yandex.money.android.fragments.CscFragment;
 import ru.yandex.money.android.fragments.ErrorFragment;
 import ru.yandex.money.android.fragments.SuccessFragment;
 import ru.yandex.money.android.fragments.WebFragment;
-import ru.yandex.money.android.mockServer.DefaultMockServerHostsProvider;
-import ru.yandex.money.android.mockServer.MockDispatcher;
 import ru.yandex.money.android.parcelables.ExternalCardParcelable;
 import ru.yandex.money.android.parcelables.ExternalPaymentProcessSavedStateParcelable;
 import ru.yandex.money.android.utils.Keyboards;
@@ -103,7 +98,6 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
 
     private static final String KEY_PROCESS_SAVED_STATE = "processSavedState";
     private static final String KEY_SELECTED_CARD = "selectedCard";
-    private static volatile boolean isStarted = false;
 
     private static final String PRODUCTION_HOST = "https://money.yandex.ru";
 
@@ -138,9 +132,6 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!isStarted) {
-            startWebServer();
-        }
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS); // todo show ongoing progress some other way
         setContentView(R.layout.ym_payment_activity);
 
@@ -449,7 +440,12 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
         final String host = intent.getStringExtra(EXTRA_HOST);
         final ApiClient client = new DefaultApiClient.Builder()
                 .setClientId(clientId)
-                .setHostsProvider(getHostsProvider())
+                .setHostsProvider(new DefaultApiV1HostsProvider(true) {
+                    @Override
+                    public String getMoney() {
+                        return host;
+                    }
+                })
                 .setDebugMode(!PRODUCTION_HOST.equals(host))
                 .create();
 
@@ -472,20 +468,6 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
 
         process.setInstanceId(instanceId);
         return true;
-    }
-
-    private HostsProvider getHostsProvider() {
-        final String host = getIntent().getStringExtra(EXTRA_HOST);
-        if (BuildConfig.MOCK_ENABLED) {
-            return new DefaultMockServerHostsProvider();
-        } else {
-            return new DefaultApiV1HostsProvider(true) {
-                @Override
-                public String getMoney() {
-                    return host;
-                }
-            };
-        }
     }
 
     private void onExternalPaymentReceived(@NonNull RequestExternalPayment rep) {
@@ -521,24 +503,6 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
     void onOperationFailed() {
         showUnknownError();
         hideProgressBar();
-    }
-
-    private void startWebServer() {
-        new Thread() {
-            @Override
-            public void run() {
-                final MockWebServer mockWebServer = new MockWebServer();
-                mockWebServer.setDispatcher(new MockDispatcher(getApplicationContext()));
-                try {
-                    mockWebServer.start(8080);
-                    isStarted = true;
-                } catch (IOException e) {
-                    isStarted = false;
-                    e.printStackTrace();
-                }
-            }
-        }.start();
-
     }
 
     private void replaceFragment(@Nullable Fragment fragment, boolean clearBackStack) {

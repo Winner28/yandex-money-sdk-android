@@ -246,7 +246,11 @@ public class PayActivity extends ListActivity {
 
         static ApiData getFromProperties(Context context) {
             Properties prop = loadProperties(context);
-            return new ApiData(prop.getProperty("client_id"), prop.getProperty("host"));
+            String host = prop.getProperty("host");
+            if (BuildConfig.MOCK_ENABLED) {
+                host = "http://127.0.0.1:8080";
+            }
+            return new ApiData(prop.getProperty("client_id"), host);
         }
 
         private static Properties loadProperties(Context context) {
