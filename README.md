@@ -1,8 +1,12 @@
+# DEPRECATED
+
+You may use Yandex.Checkout solutions. Refer to <https://checkout.yandex.com/docs/client-sdks/>
+
 # Yandex.Money SDK for Android
 
 ## Overview
 
-This library provides tools for performing payments on devices running Android 4.0 (API 14) or
+This library provides tools for performing payments on devices running Android 4.0.4 (API 15) or
 higher.
 
 Features:
@@ -17,8 +21,7 @@ The library uses [Yandex.Money SDK for Java][1].
 
 ### Gradle Dependency (jCenter)
 
-[![Download](https://api.bintray.com/packages/yandex-money/maven/yandex-money-sdk-android/images/download.svg)]
-(https://bintray.com/yandex-money/maven/yandex-money-sdk-android/_latestVersion)
+[![Download](https://api.bintray.com/packages/yandex-money/maven/yandex-money-sdk-android/images/download.svg)](https://bintray.com/yandex-money/maven/yandex-money-sdk-android/_latestVersion)
 
 To use the library in your project write this code to you build.gradle:
 
@@ -30,7 +33,7 @@ allprojects {
 }
 
 dependencies {
-    compile 'com.yandex.money.api:yandex-money-sdk-android:4.1.3'
+    compile 'com.yandex.money.api:yandex-money-sdk-android:4.1.4'
 }
 ```
 
@@ -74,7 +77,7 @@ public class MyActivity extends Activity implement View.OnClickListener {
 }
 ```
 
-The `setHost` call is optional. By default the production host(https://money.yandex.ru) will be
+The `setHost` call is optional. By default the production host(<https://money.yandex.ru>) will be
 used.
 
 ## Sample Project
