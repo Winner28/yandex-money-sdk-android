@@ -38,6 +38,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 
 import com.yandex.money.api.methods.InstanceId;
@@ -111,12 +112,13 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
     private List<ExternalCard> cards;
 
     private boolean immediateProceed = true;
-    private boolean isPaused = false;
 
     @Nullable
     private ExternalCard selectedCard;
     @Nullable
     private AsyncTask<Void, Void, ?> task;
+
+    private boolean isStateSaved = false;
 
     /**
      * Returns intent builder used for launch this activity.
@@ -169,6 +171,7 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        isStateSaved = true;
         outState.putParcelable(KEY_PROCESS_SAVED_STATE,
                 new ExternalPaymentProcessSavedStateParcelable(process.getSavedState()));
         if (selectedCard != null) {
@@ -177,15 +180,15 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        isPaused = false;
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        isStateSaved = false;
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        isPaused = true;
+    protected void onResume() {
+        super.onResume();
+        isStateSaved = false;
     }
 
     @Override
@@ -506,7 +509,7 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
     }
 
     private void replaceFragment(@Nullable Fragment fragment, boolean clearBackStack) {
-        if (fragment == null || isPaused) {
+        if (fragment == null || isStateSaved) {
             return;
         }
 
@@ -532,7 +535,10 @@ public final class PaymentActivity extends Activity implements ExternalPaymentPr
     }
 
     private void hideKeyboard() {
-        Keyboards.hideKeyboard(this);
+        final View currentFocus = getCurrentFocus();
+        if (currentFocus != null) {
+            currentFocus.clearFocus();
+        }
     }
 
     private void applyResult() {
