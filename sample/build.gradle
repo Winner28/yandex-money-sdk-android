@@ -1,6 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 25
@@ -52,16 +50,6 @@ android {
 dependencies {
     compile project(':library')
     compile "com.squareup.okhttp3:mockwebserver:4.0.1"
-    testImplementation "junit:junit:4.12"
-    testImplementation 'androidx.test:core:1.2.0'
-    testImplementation "org.robolectric:robolectric:4.2"
-    testImplementation ("androidx.test:runner:1.1.0") {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    }
-    testImplementation "org.mockito:mockito-core:2.23.0"
-    testImplementation "androidx.test.ext:junit:1.1.1"
-    compile 'com.google.code.gson:gson:2.8.5'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 task copyAppSettings {

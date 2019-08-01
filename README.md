@@ -90,6 +90,8 @@ To obtain *client id* please visit [this page][2] (also available in [Russian][3
 Keep in mind that the application data should be cleaned by you after switching from one host to
 another.
 
+If you want to make test payments, select msdkMockDebug build option in the Build Variants settings.
+
 ## Links
 
 1. Yandex.Money API (in [English][4], in [Russian][5])

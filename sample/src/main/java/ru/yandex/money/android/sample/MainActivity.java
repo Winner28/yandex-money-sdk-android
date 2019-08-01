@@ -32,7 +32,7 @@ import android.widget.Button;
 import java.io.IOException;
 
 import okhttp3.mockwebserver.MockWebServer;
-import ru.yandex.money.android.mockServer.MockDispatcher;
+import ru.yandex.money.android.sample.mockServer.MockDispatcher;
 
 public class MainActivity extends Activity {
 
